@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./globals.css";
 import ThemeToggle from "../components/ThemeToggle";
-import { CartProvider } from "../context/CartContext";
+import { CartProvider, useCart } from "../context/CartContext";
 import Link from "next/link";
 
 export default function RootLayout({ children }) {
@@ -16,6 +16,25 @@ export default function RootLayout({ children }) {
     if (theme === "dark") document.documentElement.classList.add("dark");
   }, []);
 
+  // Cart size logic
+  function CartNavIcon() {
+    const { cart } = useCart();
+    console.log(cart);
+    const cartSize = cart.reduce((sum, item) => sum + item.quantity, 0);
+    return (
+      <Link href="/cart">
+        <div className="relative flex items-center">
+          <span className="text-2xl">🛒</span>
+          {cart.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+              {cart.length}
+            </span>
+          )}
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <html lang="en">
       <head />
@@ -27,6 +46,7 @@ export default function RootLayout({ children }) {
                 ShopMini
               </Link>
               <nav className="ml-auto flex items-center gap-4">
+                <CartNavIcon />
                 <ThemeToggle />
               </nav>
             </div>

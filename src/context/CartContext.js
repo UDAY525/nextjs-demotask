@@ -19,6 +19,7 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   const addToCart = (product) => {
+    console.log("Adding to cart");
     setCart((prev) => {
       const found = prev.find((p) => p.id === product.id);
       if (found)
@@ -29,11 +30,21 @@ export function CartProvider({ children }) {
     });
   };
 
+  const decreaseQuantity = (product) => {
+    setCart((prev) => {
+      return prev
+        .map((p) => (p.id === product.id ? { ...p, qty: p.qty - 1 } : p))
+        .filter((p) => p.qty > 0);
+    });
+  };
+
   const removeFromCart = (id) =>
     setCart((prev) => prev.filter((p) => p.id !== id));
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, decreaseQuantity }}
+    >
       {children}
     </CartContext.Provider>
   );
