@@ -24,7 +24,7 @@ export default function ProductCard({ product }) {
           {product.title}
         </h3>
       </Link>
-      <div className="mt-auto flex flex-col lg:flex-row items-center justify-between">
+      <div className="mt-auto flex flex-row items-center justify-between">
         <span className="font-bold">${product.price}</span>
         <span className="text-xs px-2 py-1 bg-slate-100 text-black capitalize dark:bg-slate-800 rounded">
           {product.category}
