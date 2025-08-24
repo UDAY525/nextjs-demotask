@@ -19,7 +19,7 @@ export default function FilterSort({
           All Categories
         </option>
         {categories.map((c) => (
-          <option className="text-black" key={c} value={c}>
+          <option className="text-black capitalize" key={c} value={c}>
             {c}
           </option>
         ))}
