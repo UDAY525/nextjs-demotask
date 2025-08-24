@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
 import toast, { Toaster } from "react-hot-toast";
@@ -43,6 +43,11 @@ const CartPage = () => {
     (sum, item) => sum + (item.price || 0) * (item.qty || 1),
     0
   );
+
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") document.documentElement.classList.add("dark");
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto p-4">

@@ -35,6 +35,11 @@ export default function ProductPage({ params }) {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") document.documentElement.classList.add("dark");
+  }, []);
+
   if (loading) return <div className="skeleton h-60 w-full" />;
   if (error)
     return (
