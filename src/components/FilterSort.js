@@ -13,11 +13,13 @@ export default function FilterSort({
       <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="p-2 border rounded"
+        className="p-2 border rounded "
       >
-        <option value="all">All Categories</option>
+        <option className="text-black" value="all">
+          All Categories
+        </option>
         {categories.map((c) => (
-          <option key={c} value={c}>
+          <option className="text-black" key={c} value={c}>
             {c}
           </option>
         ))}
@@ -28,9 +30,15 @@ export default function FilterSort({
         onChange={(e) => setSort(e.target.value)}
         className="p-2 border rounded"
       >
-        <option value="default">Sort</option>
-        <option value="asc">Price: Low → High</option>
-        <option value="desc">Price: High → Low</option>
+        <option className="text-black" value="default">
+          Sort
+        </option>
+        <option className="text-black" value="asc">
+          Price: Low → High
+        </option>
+        <option className="text-black" value="desc">
+          Price: High → Low
+        </option>
       </select>
     </div>
   );
