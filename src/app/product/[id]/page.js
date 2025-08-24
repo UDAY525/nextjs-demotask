@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../../../context/CartContext";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ProductPage({ params }) {
   const { id } = params;
@@ -10,6 +11,11 @@ export default function ProductPage({ params }) {
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
   const router = useRouter();
+
+  const addItemHandler = (product) => {
+    toast.success("Added to cart!");
+    addToCart(product);
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -60,12 +66,13 @@ export default function ProductPage({ params }) {
           Rating: {product.rating?.rate} ({product.rating?.count} reviews)
         </p>
         <button
-          onClick={() => addToCart(product)}
+          onClick={() => addItemHandler(product)}
           className="px-4 py-2 rounded bg-indigo-600 text-white"
         >
           Add to Cart
         </button>
       </div>
+      <Toaster />
     </div>
   );
 }
