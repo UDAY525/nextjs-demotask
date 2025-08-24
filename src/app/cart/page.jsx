@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
+import toast, { Toaster } from "react-hot-toast";
 
 const CartPage = () => {
   const { cart, removeFromCart, addToCart, decreaseQuantity } = useCart();
@@ -9,11 +10,33 @@ const CartPage = () => {
   // Helper to decrease quantity or remove if qty becomes 0
   const decreaseQty = (item) => {
     decreaseQuantity(item);
+    toast(
+      item.qty <= 1 ? "Item removed from cart" : "Item Quantity Decreased",
+      {
+        icon: item.qty <= 1 ? "⚠️" : "➖",
+        style: {
+          background: item.qty <= 1 ? "#fbbf24" : "#f3f4f6",
+          color: "#111827",
+        },
+      }
+    );
   };
 
   // Helper to increase quantity
   const increaseQty = (item) => {
     addToCart(item);
+    toast.success("Item Quantity Increased");
+  };
+
+  const removeItemHandler = (item) => {
+    removeFromCart(item.id);
+    toast("Item removed from cart", {
+      icon: "🗑️",
+      style: {
+        background: "#ef4444",
+        color: "#fff",
+      },
+    });
   };
 
   const total = cart.reduce(
@@ -64,7 +87,7 @@ const CartPage = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => removeItemHandler(item)}
                   className="text-red-500 text-sm"
                 >
                   Remove
@@ -83,6 +106,7 @@ const CartPage = () => {
           </Link>
         </>
       )}
+      <Toaster />
     </div>
   );
 };

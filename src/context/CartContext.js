@@ -19,7 +19,6 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   const addToCart = (product) => {
-    console.log("Adding to cart");
     setCart((prev) => {
       const found = prev.find((p) => p.id === product.id);
       if (found)

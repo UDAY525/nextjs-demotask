@@ -1,10 +1,17 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    toast.success("Added to cart!");
+  };
+
   return (
     <article className="border rounded p-3 flex flex-col gap-2 hover:shadow-lg transition-shadow">
       <Link href={`/product/${product.id}`}>
@@ -24,11 +31,12 @@ export default function ProductCard({ product }) {
         </span>
       </div>
       <button
-        onClick={() => addToCart(product)}
+        onClick={handleAddToCart}
         className="px-4 py-2 rounded bg-indigo-600 text-white"
       >
         Add to Cart
       </button>
+      <Toaster />
     </article>
   );
 }
