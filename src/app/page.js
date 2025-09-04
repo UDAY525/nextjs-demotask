@@ -4,6 +4,7 @@ import ProductCard from "../components/ProductCard";
 import SearchBar from "../components/SearchBar";
 import FilterSort from "../components/FilterSort";
 import Skeleton from "../components/Skeleton";
+import Link from "next/link";
 
 export default function Page() {
   const [products, setProducts] = useState([]);
@@ -14,7 +15,13 @@ export default function Page() {
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("default");
   const [categories, setCategories] = useState([]);
-  const [gridView, setGridView] = useState(false);
+  const [gridView, setGridView] = useState(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("gridView");
+      return stored === "true";
+    }
+    return false;
+  });
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -49,6 +56,12 @@ export default function Page() {
     if (sort === "desc") list.sort((a, b) => b.price - a.price);
     setFiltered(list);
   }, [products, category, query, sort]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("gridView", gridView);
+    }
+  }, [gridView]);
 
   return (
     <section>
@@ -93,9 +106,11 @@ export default function Page() {
       {gridView && (
         <div className="flex flex-col gap-4">
           {filtered.map((p) => (
-            <div
+            <Link
               key={p.id}
-              className="flex items-center border rounded p-3 gap-4 bg-white dark:bg-gray-900"
+              href={`/product/${p.id}`}
+              className="flex items-center border rounded p-3 gap-4 bg-white dark:bg-gray-900 hover:bg-slate-100 dark:hover:bg-gray-800 transition"
+              style={{ textDecoration: "none" }}
             >
               <img
                 src={p.image}
@@ -111,7 +126,7 @@ export default function Page() {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
