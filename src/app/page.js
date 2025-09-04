@@ -14,6 +14,7 @@ export default function Page() {
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("default");
   const [categories, setCategories] = useState([]);
+  const [gridView, setGridView] = useState(false);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -53,6 +54,13 @@ export default function Page() {
     <section>
       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
         <SearchBar value={query} onChange={setQuery} />
+        <button
+          onClick={() => setGridView((p) => !p)}
+          className="px-4 py-2 rounded bg-indigo-600 text-white font-medium shadow hover:bg-indigo-700 transition-colors"
+          aria-label="Toggle product view"
+        >
+          {gridView ? "Show Grid View" : "Show List View"}
+        </button>
         <FilterSort
           categories={categories}
           category={category}
@@ -82,7 +90,33 @@ export default function Page() {
         </div>
       )}
 
-      {!loading && !error && (
+      {gridView && (
+        <div className="flex flex-col gap-4">
+          {filtered.map((p) => (
+            <div
+              key={p.id}
+              className="flex items-center border rounded p-3 gap-4 bg-white dark:bg-gray-900"
+            >
+              <img
+                src={p.image}
+                alt={p.title}
+                className="h-20 w-20 object-contain rounded"
+              />
+              <div className="flex-1">
+                <h3 className="font-medium text-base">{p.title}</h3>
+                <div className="flex gap-2 items-center mt-1">
+                  <span className="font-bold">${p.price}</span>
+                  <span className="text-xs px-2 py-1 bg-slate-100 text-black capitalize dark:bg-slate-800 rounded">
+                    {p.category}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!loading && !error && !gridView && (
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {filtered.map((p) => (
             <ProductCard key={p.id} product={p} />
